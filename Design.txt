@@ -9,8 +9,7 @@ Ideas:
 	Sounds
 
 Mob properties:
-	Position
-	Direction & current speed (vector)
+	Position, direction & current speed (vector)
 	Max speed
 	Health
 	Inventory?
