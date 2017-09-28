@@ -1,0 +1,16 @@
+Ideas:
+	Platformer (side-/up-scrolling)
+	Underwater
+	Slowfall
+	Swim/multi-jump?
+	Bubbles
+	Waves
+	Godrays
+	Sounds
+
+Mob properties:
+	Position
+	Direction & current speed (vector)
+	Max speed
+	Health
+	Inventory?
