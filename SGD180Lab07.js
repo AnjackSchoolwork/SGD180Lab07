@@ -14,8 +14,8 @@ function update() {
 
 }
 
-function generateMob(base_type, x_pos, y_pos) {
-	var tempMob = new base_types[base_type]
+function generateMob(scene, base_type, x_pos, y_pos) {
+	var tempMob = new base_types[base_type](scene)
 
 	tempMob.vector2d.x = x_pos ? x_pos : tempMob.vector2d.x
 	tempMob.vector2d.y = y_pos ? y_pos : tempMob.vector2d.y

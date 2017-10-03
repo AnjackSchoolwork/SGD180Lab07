@@ -9,7 +9,9 @@ Ideas:
 	Sounds
 
 Mob properties:
-	Position, direction & current speed (vector)
+	Position, direction & velocity (vector)
+		- Velocity drops at constant rate due to drag
+		- Movement keys give temporary burst of velocity up to velocity cap
 	Max speed
 	Health
 	Inventory?
