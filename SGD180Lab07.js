@@ -25,8 +25,6 @@ function update() {
 		platforms[index].update()
 	}
 
-	checkKeys()
-
 	player.update()
 
 }

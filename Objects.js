@@ -13,13 +13,15 @@ function entity_base() {
 
 	this.update = function () {
 
+		checkKeys()
+
+		this.followGravity()
+		this.drainInertia()
+		this.checkCollisions()
+
 		this.y = this.sprite.y
 		this.x = this.sprite.x
 
-		//this.followGravity()
-		this.checkCollisions()
-		this.drainInertia()
-		
 		this.sprite.update()
 	}
 
@@ -63,9 +65,10 @@ function entity_base() {
 
 	this.followGravity = function () {
 		// Send me toward the bottom.
-		// Temporary limit until collision is enabled.
-		if (this.y < 550) {
-			this.sprite.changeYby(2)
+		// This is so janky
+		if (this.y < game.height - (this.sprite.height / 2)) {
+			if (this.sprite.dy == 0)
+				this.sprite.setChangeY(this.moveInc)
 		}
 	}
 
@@ -90,25 +93,25 @@ function entity_base() {
 			if (this.sprite.collidesWith(platforms[index])) {
 				if (x_max > that.x_min) {
 					if (this.sprite.dx > 0) {
-						this.sprite.changeXby(-this.sprite.dx)
+						this.sprite.setPosition(this.x + this.moveInc, this.y)
 						this.sprite.setChangeX(0)
 					}
 				}
 				if (x_min < that.x_max) {
 					if (this.sprite.dx < 0) {
-						this.sprite.changeXby(-this.sprite.dx)
+						this.sprite.setPosition(this.x - this.moveInc, this.y)
 						this.sprite.setChangeX(0)
 					}
 				}
 				if (y_max > that.y_min) {
 					if (this.sprite.dy > 0) {
-						this.sprite.changeYby(-this.sprite.dy)
+						this.sprite.setPosition(this.x, this.y + this.moveInc)
 						this.sprite.setChangeY(0)
 					}
 				}
 				if (y_min < that.y_max) {
 					if (this.sprite.dy < 0) {
-						this.sprite.changeYby(-this.sprite.dx)
+						this.sprite.setPosition(this.x, this.y - this.moveInc)
 						this.sprite.setChangeY(0)
 					}
 				}
