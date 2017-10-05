@@ -1,8 +1,10 @@
-function entity_base() {
+function entity_base(x_pos, y_pos, sprite_image, width, height) {
 
 	this.x
 	this.y
-	this.sprite = new Sprite(game, "", 0, 0)
+	this.sprite = new Sprite(game, sprite_image, width, height)
+	this.sprite.setPosition(x_pos, y_pos)
+	this.sprite.setSpeed(0)
 
 	this.inventory = {}
 	this.moveInc = 5
@@ -11,18 +13,19 @@ function entity_base() {
 	this.maxHealth = 100
 	this.currentHealth = 100
 
-	this.update = function () {
-
+	this.update_position = function () {
+		
 		checkKeys()
-
-		this.followGravity()
+		
 		this.drainInertia()
-		this.checkCollisions()
-
-		this.y = this.sprite.y
-		this.x = this.sprite.x
 
 		this.sprite.update()
+		this.y = this.sprite.y
+		this.x = this.sprite.x
+	}
+
+	this.draw = function () {
+		this.sprite.draw()
 	}
 
 	this.moveLeft = function () {
@@ -63,61 +66,7 @@ function entity_base() {
 		}
 	}
 
-	this.followGravity = function () {
-		// Send me toward the bottom.
-		// This is so janky
-		if (this.y < game.height - (this.sprite.height / 2)) {
-			if (this.sprite.dy == 0)
-				this.sprite.setChangeY(this.moveInc)
-		}
-	}
-
-	this.checkCollisions = function () {
-		for (var index in platforms) {
-			var that = {}
-			that.x = platforms[index].x
-			that.y = platforms[index].y
-			that.width = platforms[index].width
-			that.height = platforms[index].height
-			that.x_min = that.x - (that.width / 2)
-			that.x_max = that.x + (that.width / 2)
-			that.y_min = that.y - (that.height / 2)
-			that.y_max = that.y + (that.height / 2)
-
-			var x_min = this.x - (this.sprite.width / 2)
-			var x_max = this.x + (this.sprite.width / 2)
-
-			var y_min = this.y - (this.sprite.height / 2)
-			var y_max = this.y + (this.sprite.height / 2)
-
-			if (this.sprite.collidesWith(platforms[index])) {
-				if (x_max > that.x_min) {
-					if (this.sprite.dx > 0) {
-						this.sprite.setPosition(this.x + this.moveInc, this.y)
-						this.sprite.setChangeX(0)
-					}
-				}
-				if (x_min < that.x_max) {
-					if (this.sprite.dx < 0) {
-						this.sprite.setPosition(this.x - this.moveInc, this.y)
-						this.sprite.setChangeX(0)
-					}
-				}
-				if (y_max > that.y_min) {
-					if (this.sprite.dy > 0) {
-						this.sprite.setPosition(this.x, this.y + this.moveInc)
-						this.sprite.setChangeY(0)
-					}
-				}
-				if (y_min < that.y_max) {
-					if (this.sprite.dy < 0) {
-						this.sprite.setPosition(this.x, this.y - this.moveInc)
-						this.sprite.setChangeY(0)
-					}
-				}
-			}
-		}
-	}
+	
 }
 
 var base_types = {
@@ -125,19 +74,28 @@ var base_types = {
 	"crab_base": function(scene, x, y) {
 
 		// Simple inheritance simulation
-		entity_base.call(this)
+		entity_base.call(this, x, y, "img/crab.png", 80, 80)
 
-		/* For prototype inheritance (uncomment if necessary, erase otherwise)
-		this.prototype = Object.create(entity_base.prototype)
+		this.update = function () {
+			this.update_position()
+		}
+	},
+	"kelp_base": function (scene, x, y) {
+		entity_base.call(this, x, y, "img/kelp.png", 48, 64)
 
-		this.prototype.constructor = this
-		*/
+		this.update = function() {
 
-		// Draw it
-		this.sprite = new Sprite(game, "img/crab.png", 100, 100)
-		this.sprite.setPosition(x, y)
-		this.sprite.setSpeed(0)
+			if (getRandomInt(0, 1000) > 900) {
+				var angle = getRandomInt(0, 360)
+				this.sprite.setMoveAngle(angle)
+			}
+			if (getRandomInt(0, 100) > 75) {
+				var speed = getRandomInt(5, 10)
+
+				this.sprite.setSpeed(speed)
+			}
+			this.update_position()
+
+		}
 	}
-
-
 }

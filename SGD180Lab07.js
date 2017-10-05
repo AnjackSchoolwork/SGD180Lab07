@@ -4,14 +4,10 @@
  */
 function setup() {
 
+	kelp_list = []
+
 	game = new Scene()
-
-	platforms = []
-	var tempSprite = new Sprite(game, "img/placeholder.png", 256, 32)
-	tempSprite.setPosition(400, 300)
-	tempSprite.setSpeed(0)
-	platforms.push(tempSprite)
-
+	
 	player = generateMob(game, "crab_base", 200, 300)
 
 	game.start()
@@ -21,11 +17,10 @@ function setup() {
 function update() {
 	game.clear()
 
-	for (var index in platforms) {
-		platforms[index].update()
-	}
-
 	player.update()
+
+	for (var index in kelp_list)
+		kelp_list[index].update()
 
 }
 
@@ -35,6 +30,9 @@ function generateMob(scene, base_type, x_pos, y_pos) {
 	return tempMob
 }
 
-function generateInteractable() {
-
+function generateKelp(scene, x_pos, y_pos) {
+	
+	var temp_kelp = generateMob(scene, "kelp_base", x_pos, y_pos) 
+	
+	kelp_list.push(temp_kelp)
 }
