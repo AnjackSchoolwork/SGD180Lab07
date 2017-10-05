@@ -7,8 +7,14 @@ function setup() {
 	kelp_list = []
 
 	game = new Scene()
-	
+
+	// Create the player
 	player = generateMob(game, "crab_base", 200, 300)
+
+	// Create some kelp
+	for (var i = 0; i < 15; i++) {
+		generateKelp(game)
+	}
 
 	game.start()
 }
@@ -30,7 +36,10 @@ function generateMob(scene, base_type, x_pos, y_pos) {
 	return tempMob
 }
 
-function generateKelp(scene, x_pos, y_pos) {
+function generateKelp(scene) {
+
+	var x_pos = getRandomInt(0, scene.width)
+	var y_pos = getRandomInt(0, scene.height)
 	
 	var temp_kelp = generateMob(scene, "kelp_base", x_pos, y_pos) 
 	

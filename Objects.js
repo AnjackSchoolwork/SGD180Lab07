@@ -1,3 +1,13 @@
+
+/**
+ * The base object for entities in the game. All entities should inherit from this.
+ * 
+ * @param {integer} x_pos			X-coordinate
+ * @param {integer} y_pos			Y-coordinate
+ * @param {string} sprite_image		Relative path to sprite image
+ * @param {integer} width			Width in pixels
+ * @param {integer} height			Height in pixels
+ */
 function entity_base(x_pos, y_pos, sprite_image, width, height) {
 
 	this.x
@@ -66,14 +76,20 @@ function entity_base(x_pos, y_pos, sprite_image, width, height) {
 		}
 	}
 
-	
+	this.checkCollisions = function () {
+		for (var index in kelp_list) {
+			if (this.sprite.collidesWith(kelp_list[index])) {
+
+			}
+		}
+	}
 }
 
 var base_types = {
 
 	"crab_base": function(scene, x, y) {
 
-		// Simple inheritance simulation
+		// Simple inheritance
 		entity_base.call(this, x, y, "img/crab.png", 80, 80)
 
 		this.update = function () {

@@ -7,6 +7,9 @@ var move_up = K_W
 var move_down = K_S
 var jump = K_SPACE
 
+/**
+ * Simple function to check for pressed keys and execute relevant code.
+ */
 function checkKeys() {
 	if (keysDown[move_left]) {
 		player.moveLeft()
@@ -23,9 +26,4 @@ function checkKeys() {
 	if (keysDown[jump]) {
 		player.jumpUp()
 	}
-}
-
-
-function adjustVector2d(target, magnitude) {
-	// Adjust vector by magnitude
 }
