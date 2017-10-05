@@ -8,6 +8,8 @@ function setup() {
 
 	game = new Scene()
 
+	pickup_snd = new Sound("audio/sfx/pickup.mp3")
+
 	// Create the player
 	player = generateMob(game, "crab_base", 200, 300)
 

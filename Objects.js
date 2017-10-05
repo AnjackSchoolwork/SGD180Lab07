@@ -23,6 +23,8 @@ function entity_base(x_pos, y_pos, sprite_image, width, height) {
 	this.maxHealth = 100
 	this.currentHealth = 100
 
+	this.food_eaten = 0
+
 	this.update_position = function () {
 		
 		checkKeys()
@@ -78,8 +80,10 @@ function entity_base(x_pos, y_pos, sprite_image, width, height) {
 
 	this.checkCollisions = function () {
 		for (var index in kelp_list) {
-			if (this.sprite.collidesWith(kelp_list[index])) {
-
+			if (this.sprite.collidesWith(kelp_list[index].sprite)) {
+				kelp_list.splice(index, 1)
+				this.food_eaten++
+				pickup_snd.play()
 			}
 		}
 	}
@@ -94,6 +98,7 @@ var base_types = {
 
 		this.update = function () {
 			this.update_position()
+			this.checkCollisions()
 		}
 	},
 	"kelp_base": function (scene, x, y) {
