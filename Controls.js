@@ -5,7 +5,6 @@ var move_left = K_A
 var move_right = K_D
 var move_up = K_W
 var move_down = K_S
-var jump = K_SPACE
 
 /**
  * Simple function to check for pressed keys and execute relevant code.
@@ -23,7 +22,7 @@ function checkKeys() {
 	if (keysDown[move_down]) {
 		player.moveDown()
 	}
-	if (keysDown[jump]) {
-		player.jumpUp()
+	if (document.mouseClicked) {
+		player.fireLaser()
 	}
 }

@@ -32,6 +32,9 @@ function entity_base(x_pos, y_pos, sprite_image, width, height) {
 		this.drainInertia()
 
 		this.sprite.update()
+
+		this.sprite.calcSpeedAngle();
+
 		this.y = this.sprite.y
 		this.x = this.sprite.x
 	}
@@ -56,8 +59,16 @@ function entity_base(x_pos, y_pos, sprite_image, width, height) {
 		this.sprite.setChangeY(this.moveInc)
 	}
 
-	this.jumpUp = function () {
-		this.sprite.setChangeY(-10)
+	this.fireLaser = function () {
+		var x_diff = game.getMouseX() - this.x
+		var y_diff = game.getMouseY() - this.y
+
+		var width = Math.sqrt((x_diff * x_diff) + (y_diff * y_diff))
+
+		var temp_sprite = new Sprite(game, "img/placeholder.png", 16, 16)
+		temp_sprite.setPosition(game.getMouseX(), game.getMouseY())
+
+		junk_list.push(new laser_beam(this.sprite.x + (x_diff / 2), this.sprite.y + (y_diff / 2), this.sprite.distanceTo(temp_sprite), this.sprite.angleTo(temp_sprite)))
 	}
 
 	this.drainInertia = function() {
@@ -79,13 +90,7 @@ function entity_base(x_pos, y_pos, sprite_image, width, height) {
 	}
 
 	this.checkCollisions = function () {
-		for (var index in kelp_list) {
-			if (this.sprite.collidesWith(kelp_list[index].sprite)) {
-				kelp_list.splice(index, 1)
-				this.food_eaten++
-				pickup_snd.play()
-			}
-		}
+		// This is where we would take damage if I'd coded it...
 	}
 }
 
@@ -101,8 +106,8 @@ var base_types = {
 			this.checkCollisions()
 		}
 	},
-	"kelp_base": function (scene, x, y) {
-		entity_base.call(this, x, y, "img/kelp.png", 48, 64)
+	"shark_base": function (scene, x, y) {
+		entity_base.call(this, x, y, "img/shark.png", 256, 73)
 
 		this.update = function() {
 
@@ -117,6 +122,34 @@ var base_types = {
 			}
 			this.update_position()
 
+		}
+	}
+}
+
+// Collision is pretty bad on this one since it's a long, angled image.
+function laser_beam(start_x, start_y, width, angle) {
+	this.life_span = 5
+	this.ctx = game.context
+
+	this.sprite = new Sprite(game, "img/laser.png", width, 16)
+	this.sprite.setPosition(start_x, start_y)
+	this.sprite.setImgAngle(angle)
+	this.sprite.setSpeed(0)
+
+	this.update = function () {
+		this.sprite.update()
+		this.life_span--
+
+		laser_snd.play()
+
+		this.checkCollisions()
+	}
+
+	this.checkCollisions = function () {
+		for (var index in shark_list) {
+			if (this.sprite.collidesWith(shark_list[index].sprite)) {
+				shark_list.splice(index, 1)
+			}
 		}
 	}
 }

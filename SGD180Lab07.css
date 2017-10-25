@@ -1,3 +1,9 @@
 ﻿body
 {
+    background-color: darkgray;
+}
+
+div {
+    margin: auto;
+    text-align: center;
 }
